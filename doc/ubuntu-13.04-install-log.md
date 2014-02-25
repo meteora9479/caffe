@@ -13,7 +13,7 @@ Notes:
 
 
 
-## Steps
+## Steps to build caffe
 
 Try to compile:
 
