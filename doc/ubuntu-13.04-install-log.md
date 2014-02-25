@@ -11,7 +11,7 @@ Note: when starting this installation, I already had Cuda 5.5 installed.
 
 ## Steps
 
-Try to compile
+Try to compile:
 
     jason [~/s/caffe] $ make
     /usr/bin/g++ src/caffe/proto/caffe.pb.cc -pthread -fPIC -DNDEBUG -O2 -I/usr/include/python2.7 -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/include -I./src -I./include -I/usr/local/cuda/include -I/opt/intel/mkl/include -c -o build/src/caffe/proto/caffe.pb.o
@@ -20,11 +20,11 @@ Try to compile
     compilation terminated.
     make: *** [build/src/caffe/proto/caffe.pb.o] Error 1
 
-Fails, so install libprotobuf-dev
+Fails, so install libprotobuf-dev:
 
     jason [~] $ sudo apt-get install libprotobuf-dev
 
-Try to compile
+Try to compile:
 
     jason [~/s/caffe] $ make
     /usr/bin/g++ src/caffe/proto/caffe.pb.cc -pthread -fPIC -DNDEBUG -O2 -I/usr/include/python2.7 -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/include -I./src -I./include -I/usr/local/cuda/include -I/opt/intel/mkl/include -c -o build/src/caffe/proto/caffe.pb.o
@@ -37,13 +37,13 @@ Try to compile
     compilation terminated.
     make: *** [build/src/caffe/layer_factory.o] Error 1
 
-Fails so install boost:
+Fails, so install boost:
 
     jason [~] $ sudo apt-get install libboost-all-dev
 
 Note: this installed boost 1.49 by default on Ubuntu 13.04.
 
-Try to compile
+Try to compile:
 
     jason [~/s/caffe] $ make
     /usr/bin/g++ src/caffe/layer_factory.cpp -pthread -fPIC -DNDEBUG -O2 -I/usr/include/python2.7 -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/include -I./src -I./include -I/usr/local/cuda/include -I/opt/intel/mkl/include -c -o build/src/caffe/layer_factory.o
@@ -57,26 +57,16 @@ Fails, so install google-glog:
     jason [~/s/caffe] $ mkdir -p ~/temp/glog
     jason [~/s/caffe] $ cd ~/temp/glog
     jason [~/temp/glog] $ wget 'https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz'
-    --2014-02-25 11:14:35--  https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz
-    Resolving google-glog.googlecode.com (google-glog.googlecode.com)... 74.125.22.82, 2607:f8b0:400d:c06::52
-    Connecting to google-glog.googlecode.com (google-glog.googlecode.com)|74.125.22.82|:443... connected.
-    HTTP request sent, awaiting response... 200 OK
-    Length: 509676 (498K) [application/x-gzip]
-    Saving to: ‘glog-0.3.3.tar.gz’
-    
-    100%[=====================================================================================================>] 509,676     1.52MB/s   in 0.3s
-    
-    2014-02-25 11:14:36 (1.52 MB/s) - ‘glog-0.3.3.tar.gz’ saved [509676/509676]
-    
+    ...
     jason [~/temp/glog] $ tar xvzf glog-0.3.3.tar.gz
-    ........
+    ...
     jason [~/temp/glog] $ cd glog-0.3.3/
     jason [~/temp/glog/glog-0.3.3] $ ./configure --prefix=$HOME/s/caffe/local
-    ........
+    ...
     jason [~/temp/glog/glog-0.3.3] $ make
-    ........
+    ...
     jason [~/temp/glog/glog-0.3.3] $ make install
-    .......
+    ...
     ----------------------------------------------------------------------
     Libraries have been installed in:
        /home/jason/s/caffe/local/lib
@@ -95,9 +85,9 @@ Fails, so install google-glog:
     See any operating system documentation about shared libraries for
     more information, such as the ld(1) and ld.so(8) manual pages.
     ----------------------------------------------------------------------
-    .......
+    ...
 
-Try to compile
+Try to compile:
 
     jason [~/s/caffe] $ make
     /usr/bin/g++ src/caffe/layer_factory.cpp -pthread -fPIC -DNDEBUG -O2 -I/usr/include/python2.7 -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/include -I./src -I./include -I/usr/local/cuda/include -I/opt/intel/mkl/include -c -o build/src/caffe/layer_factory.o
@@ -108,7 +98,7 @@ Try to compile
     compilation terminated.
     make: *** [build/src/caffe/layer_factory.o] Error 1
 
-Oops, it can't find the logging headers we just installed in /home/jason/s/caffe/local. Add the lines reflected by this diff to the file Makefile.config:
+Oops, it can't find the logging headers we just installed in `$HOME/s/caffe/local`. Let's tell it where to look and then try again. Add the lines reflected by this diff to the file Makefile.config:
 
     jason [~/s/caffe] $ diff -u Makefile.config.example Makefile.config
     --- Makefile.config.example    2014-02-19 18:23:18.287192652 -0500
@@ -124,7 +114,7 @@ Oops, it can't find the logging headers we just installed in /home/jason/s/caffe
     
      # For OS X, use clang++.
 
-Try to compile
+Try to compile:
 
     jason [~/s/caffe] $ make
     /usr/bin/g++ src/caffe/layer_factory.cpp -pthread -fPIC -DNDEBUG -O2 -I/usr/include/python2.7 -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/include -I./src -I./include -I/usr/local/cuda/include -I/opt/intel/mkl/include -I./local/include -c -o build/src/caffe/layer_factory.o
