@@ -125,7 +125,7 @@ Try to compile:
     compilation terminated.
     make: *** [build/src/caffe/layer_factory.o] Error 1
 
-Install the Intel Math Kernel Library (MKL) from here: http://software.intel.com/en-us/intel-mkl . (Get evaluation version if desired). When installing, choose option 3 and install to the default local path, $HOME/intel .
+Install the Intel Math Kernel Library (MKL) from here: http://software.intel.com/en-us/intel-mkl . (Get evaluation version if desired). When installing, choose option 3 and install to the default local path, `$HOME/intel`.
 
 Try to compile
 
@@ -138,7 +138,7 @@ Try to compile
     compilation terminated.
     make: *** [build/src/caffe/layer_factory.o] Error 1
 
-Oops, it can't find the MKL library we just installed. Add the lines reflected by this diff to the file Makefile.config:
+Oops, it can't find the MKL library we just installed. Tell it where to look by adding the lines reflected by this diff to the file Makefile.config:
 
     jason [~/s/caffe] $ diff -u Makefile.config.example Makefile.config
     --- Makefile.config.example    2014-02-19 18:23:18.287192652 -0500
@@ -153,7 +153,7 @@ Oops, it can't find the MKL library we just installed. Add the lines reflected b
      # NOTE: this is required only if you will compile the matlab interface.
      # MATLAB directory should contain the mex binary in /bin
 
-Try to compile
+Try to compile:
 
     jason [~/s/caffe] $ make
     /usr/bin/g++ src/caffe/layer_factory.cpp -pthread -fPIC -DNDEBUG -O2 -I/usr/include/python2.7 -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/include -I./local/include -I./src -I./include -I/usr/local/cuda/include -I/home/jason/intel/composerxe/mkl/include -c -o build/src/caffe/layer_factory.o
@@ -162,11 +162,11 @@ Try to compile
     compilation terminated.
     make: *** [build/src/caffe/layer_factory.o] Error 1
 
-Install leveldb
+Fails, so install leveldb:
 
     jason [~] $ sudo apt-get install libleveldb-dev
 
-Try to compile
+Try to compile:
 
     jason [~/s/caffe] $ make
     ....
@@ -175,7 +175,7 @@ Try to compile
     compilation terminated.
     make: *** [build/src/caffe/util/io.o] Error 1
 
-Install OpenCV (here we use version 2.4.8 from git. Change the wget line to another snapshot from https://github.com/Itseez/opencv/releases if desired!
+Fails, so install OpenCV. Here we use version 2.4.8 from git. Change the wget line to another snapshot from https://github.com/Itseez/opencv/releases if desired!
 
     jason [~] $ mkdir -p ~/temp/opencv
     jason [~] $ cd ~/temp/opencv
