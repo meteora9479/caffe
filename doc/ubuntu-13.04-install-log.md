@@ -7,6 +7,8 @@ This is a log of my experience setting up Caffe on Ubuntu 13.04. This is based h
 
 Note: when starting this installation, I already had Cuda 5.5 installed.
 
+Note: this installation assumes the checkout of caffe is at `$HOME/s/caffe`. For different locations, just change any instances of `s/caffe` to the correct path.
+
 
 
 ## Steps
@@ -98,7 +100,7 @@ Try to compile:
     compilation terminated.
     make: *** [build/src/caffe/layer_factory.o] Error 1
 
-Oops, it can't find the logging headers we just installed in `$HOME/s/caffe/local`. Let's tell it where to look and then try again. Add the lines reflected by this diff to the file Makefile.config:
+Oops, it can't find the logging headers we just installed in `$HOME/s/caffe/local`. Let's tell it where to look and then try again. Add the lines reflected by this diff to the file `Makefile.config`:
 
     jason [~/s/caffe] $ diff -u Makefile.config.example Makefile.config
     --- Makefile.config.example    2014-02-19 18:23:18.287192652 -0500
@@ -127,7 +129,7 @@ Try to compile:
 
 Install the Intel Math Kernel Library (MKL) from here: http://software.intel.com/en-us/intel-mkl . (Get evaluation version if desired). When installing, choose option 3 and install to the default local path, `$HOME/intel`.
 
-Try to compile
+Try to compile:
 
     jason [~/s/caffe] $ make
     /usr/bin/g++ src/caffe/layer_factory.cpp -pthread -fPIC -DNDEBUG -O2 -I/usr/include/python2.7 -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/include -I./src -I./include -I/usr/local/cuda/include -I/opt/intel/mkl/include -I./local/include -c -o build/src/caffe/layer_factory.o
@@ -138,7 +140,7 @@ Try to compile
     compilation terminated.
     make: *** [build/src/caffe/layer_factory.o] Error 1
 
-Oops, it can't find the MKL library we just installed. Tell it where to look by adding the lines reflected by this diff to the file Makefile.config:
+Oops, it can't find the MKL library we just installed. Tell it where to look by adding the lines reflected by this diff to the file `Makefile.config`:
 
     jason [~/s/caffe] $ diff -u Makefile.config.example Makefile.config
     --- Makefile.config.example    2014-02-19 18:23:18.287192652 -0500
@@ -175,17 +177,13 @@ Try to compile:
     compilation terminated.
     make: *** [build/src/caffe/util/io.o] Error 1
 
-Fails, so install OpenCV. Here we use version 2.4.8 from git. Change the wget line to another snapshot from https://github.com/Itseez/opencv/releases if desired!
+Fails, so install OpenCV. Here we use version 2.4.8 from git. Change the `wget` line to another snapshot from https://github.com/Itseez/opencv/releases if desired!
 
     jason [~] $ mkdir -p ~/temp/opencv
     jason [~] $ cd ~/temp/opencv
     jason [~/temp/opencv] $ wget 'https://github.com/Itseez/opencv/archive/2.4.8.tar.gz'
     ...
     jason [~/temp/opencv] $ tar xvzf 2.4.8.tar.gz
-    opencv-2.4.8/
-    opencv-2.4.8/3rdparty/
-    opencv-2.4.8/3rdparty/ffmpeg/
-    opencv-2.4.8/3rdparty/ffmpeg/ffmpeg_version.cmake
     ...
     jason [~/temp/opencv] $ cd opencv-2.4.8/
     jason [~/temp/opencv/opencv-2.4.8] $ mkdir release
@@ -193,11 +191,11 @@ Fails, so install OpenCV. Here we use version 2.4.8 from git. Change the wget li
     jason [~/temp/opencv/opencv-2.4.8/release] $ cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=$HOME/s/caffe/local -D BUILD_opencv_gpu=OFF ..
     ...
     jason [~/temp/opencv/opencv-2.4.8/release] $ make
-    .... takes a while ....
+    ... takes a while ...
     jason [~/temp/opencv/opencv-2.4.8/release] $ make install
     ...
 
-Try to compile
+Try to compile:
 
     jason [~/s/caffe] $ make
     .............
@@ -206,24 +204,15 @@ Try to compile
     collect2: error: ld returned 1 exit status
     make: *** [libcaffe.so] Error 1
 
-Install snappy
+Fails, so install snappy:
 
     jason [~/temp/opencv/opencv-2.4.8/release] $ sudo apt-get install libsnappy-dev
 
-Try to compile
+Try to compile:
 
     jason [~/s/caffe] $ make
 
-It Works!
-
-
-
-
-
-
-
-
-
+It works!
 
 
 
@@ -235,10 +224,7 @@ After installing all the prereqs above, this worked the first time for me:
 
     jason [~/s/caffe] $ make pycaffe
 
-Works!
-
-
-
+It works!
 
 
 
@@ -253,18 +239,38 @@ Running the MNIST example from http://caffe.berkeleyvision.org/mnist.html is str
     Downloading...
     Unzipping...
     Done.
+
+We also need to run `./create_mnist.sh` to create the leveldb files from the `*-ubyte` files we just downloaded:
     
     jason [~/s/caffe/data] $ ./create_mnist.sh
     Creating leveldb...
     ../build/examples/convert_mnist_data.bin: error while loading shared libraries: libglog.so.0: cannot open shared object file: No such file or directory
     ../build/examples/convert_mnist_data.bin: error while loading shared libraries: libglog.so.0: cannot open shared object file: No such file or directory
     Done.
+
+Oops, this doesn't work because it's not sure where to find `libglog`. We'd better add `$HOME/s/caffe/local/lib` to our `LD_LIBRARY_PATH`. Let's add the MKL library location as well (this line is for intel64):
     
-    jason [~/s/caffe/data] $ export LD_LIBRARY_PATH=:/usr/local/cuda-5.5/lib64:/lib:$HOME/s/caffe/local/lib:$HOME/intel/composerxe/mkl/lib/intel64
+    jason [~/s/caffe/data] $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/s/caffe/local/lib:$HOME/intel/composerxe/mkl/lib/intel64
     
+Now creation of the leveldb files should work:
+
     jason [~/s/caffe/data] $ ./create_mnist.sh
     Creating leveldb...
     Done.
+
+    jason@kronk [~/s/caffe/data] $ ls -d *leveldb
+    mnist-test-leveldb/  mnist-train-leveldb/
+
+Now we can train the net! Note that my binary ended up in `../build/examples/train_net.bin` instead of at `../examples/train_net.bin`:
+
+    jason@kronk [~/s/caffe/data] $ GLOG_logtostderr=1 ../build/examples/train_net.bin lenet_solver.prototxt
+    I0225 17:14:17.583492 20761 train_net.cpp:26] Starting Optimization
+    I0225 17:14:17.583827 20761 solver.cpp:26] Creating training net.
+    I0225 17:14:17.583868 20761 net.cpp:66] Creating Layer mnist
+    I0225 17:14:17.583884 20761 net.cpp:101] mnist -> data
+    ...
+
+
 
 
 
