@@ -1,13 +1,15 @@
 ## Install Log
 
-This is a log of my experience setting up Caffe on Ubuntu 13.04. This is based heavily on:
+This is a log of my experience setting up Caffe on Ubuntu 13.04 by following these two sets of instructions:
 
 - http://caffe.berkeleyvision.org/installation.html
-- https://github.com/BVLC/caffe/wiki/Installation-%28rbg%29  (But here we use Ubuntu 13.04 instead of 12.04, a slightly newer version of OpenCV, etc.)
+- https://github.com/BVLC/caffe/wiki/Installation-%28rbg%29
 
-Note: when starting this installation, I already had Cuda 5.5 installed.
+Notes:
 
-Note: this installation assumes the checkout of caffe is at `$HOME/s/caffe`. For different locations, just change any instances of `s/caffe` to the correct path.
+- Here we use Ubuntu 13.04 instead of 12.04, as assumed by the second link above.
+- When starting this installation, I already had Cuda 5.5 installed.
+- I had a checkout of caffe at `$HOME/s/caffe`. If your checkout is at a different location, just change any instances of `s/caffe` to the correct path.
 
 
 
