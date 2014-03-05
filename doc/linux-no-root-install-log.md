@@ -19,14 +19,12 @@ Notes:
 
 ## Satisfy prereqs
 
-### Modules:
-
-I got lucky and these were available:
+I got lucky and Cuda and Intel MKL were available on my cluster already as Lmod modules, allowing them to be easily loaded:
 
     module load cuda/5.5
     module load intel/14.0.0
 
-(modify Makefile.config to point to these...)
+Modify Makefile.config to point to the appropriate locations. Next, install the following series of prequisits. I assume you can download and untar the source code, so I've left those lines off.
 
 ### Install Protobuf
 
