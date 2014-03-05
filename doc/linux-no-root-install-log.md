@@ -17,14 +17,14 @@ Notes:
 
 
 
-## Satisfy prereqs
+## Satisfy prerequisites
 
 I got lucky and Cuda and Intel MKL were available on my cluster already as Lmod modules, allowing them to be easily loaded:
 
     module load cuda/5.5
     module load intel/14.0.0
 
-Modify Makefile.config to point to the appropriate locations. Next, install the following series of prequisits. I assume you can download and untar the source code, so I've left those lines off.
+Modify Makefile.config to point to the appropriate locations. Next, install the following series of prerequisites. I assume you can download and untar the source code, so I've left those lines off.
 
 ### Install Protobuf
 
@@ -81,4 +81,3 @@ After install the above prereqs, caffe should compile!
     compute_image_mean.bin*  convert_imageset.o  dump_network.bin*  finetune_net.o            test_net.bin*   train_net.o
     compute_image_mean.o     device_query.bin*   dump_network.o     net_speed_benchmark.bin*  test_net.o
     convert_imageset.bin*    device_query.o      finetune_net.bin*  net_speed_benchmark.o     train_net.bin*
-
