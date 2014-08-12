@@ -70,6 +70,19 @@ This one is a little more tricky, because it doesn't follow the usual configure/
     [~/temp/boost_1_55_0] $ ./b2 -j 32
     [~/temp/boost_1_55_0] $ ./b2 install
 
+### Install gflags
+
+    [~/temp] $ git clone https://code.google.com/p/gflags/
+    [~/temp/gflags] $ cmake -D CMAKE_INSTALL_PREFIX=$HOME/local .
+    [~/temp/gflags] $ make
+    [~/temp/gflags] $ make install
+
+### Install lmdb
+
+
+    [~/temp] $ git clone https://gitorious.org/mdb/mdb.git
+    [~/temp/mdb/libraries/liblmdb] $ make
+    [~/temp/mdb/libraries/liblmdb] $ make prefix=$HOME/local install
 
 
 ## Build caffe
