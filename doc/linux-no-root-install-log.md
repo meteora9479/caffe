@@ -33,12 +33,6 @@ Download from https://code.google.com/p/protobuf/downloads/list
     [~/temp/protobuf-2.5.0] $ ./configure --prefix=$HOME/local
     [~/temp/protobuf-2.5.0] $ make
     [~/temp/protobuf-2.5.0] $ make install
-
-### Install google-glog
-
-    [~/temp/glog-0.3.3] $ ./configure --prefix=$HOME/local
-    [~/temp/glog-0.3.3] $ make -j 32
-    [~/temp/glog-0.3.3] $ make install
     
 ### Install snappy
 
@@ -73,12 +67,18 @@ This one is a little more tricky, because it doesn't follow the usual configure/
 ### Install gflags
 
     [~/temp] $ git clone https://code.google.com/p/gflags/
-    [~/temp/gflags] $ cmake -D CMAKE_INSTALL_PREFIX=$HOME/local .
-    [~/temp/gflags] $ make
-    [~/temp/gflags] $ make install
+    [~/temp/gflags] $ mkdir build && cd build
+    [~/temp/gflags/build] $ CXXFLAGS="-fPIC" cmake -D CMAKE_INSTALL_PREFIX=$HOME/local ..
+    [~/temp/gflags/build] $ make -j
+    [~/temp/gflags/build] $ make install
+
+### Install google-glog
+
+    [~/temp/glog-0.3.3] $ ./configure --prefix=$HOME/local
+    [~/temp/glog-0.3.3] $ make -j
+    [~/temp/glog-0.3.3] $ make install
 
 ### Install lmdb
-
 
     [~/temp] $ git clone https://gitorious.org/mdb/mdb.git
     [~/temp/mdb/libraries/liblmdb] $ make
