@@ -56,16 +56,16 @@ void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   if (crop_size > 0) {
     top[0]->Reshape(this->layer_param_.data_param().batch_size(),
                        datum.channels(), crop_size, crop_size);
-    this->prefetch_data_.Reshape(this->layer_param_.data_param().batch_size(),
+    this->prefetch_blobs_[0]->Reshape(this->layer_param_.data_param().batch_size(),
         datum.channels(), crop_size, crop_size);
-    this->transformed_data_.Reshape(1, datum.channels(), crop_size, crop_size);
+    this->transformed_blobs_[0]->Reshape(1, datum.channels(), crop_size, crop_size);
   } else {
     top[0]->Reshape(
         this->layer_param_.data_param().batch_size(), datum.channels(),
         datum.height(), datum.width());
-    this->prefetch_data_.Reshape(this->layer_param_.data_param().batch_size(),
+    this->prefetch_blobs_[0]->Reshape(this->layer_param_.data_param().batch_size(),
         datum.channels(), datum.height(), datum.width());
-    this->transformed_data_.Reshape(1, datum.channels(),
+    this->transformed_blobs_[0]->Reshape(1, datum.channels(),
       datum.height(), datum.width());
   }
   LOG(INFO) << "output data size: " << top[0]->num() << ","
@@ -87,9 +87,9 @@ void DataLayer<Dtype>::InternalThreadEntry() {
   double read_time = 0;
   double trans_time = 0;
   CPUTimer timer;
-  CHECK(this->prefetch_data_.count());
-  CHECK(this->transformed_data_.count());
-  Dtype* top_data = this->prefetch_data_.mutable_cpu_data();
+  CHECK(this->prefetch_blobs_[0]->count());
+  CHECK(this->transformed_blobs_[0]->count());
+  Dtype* top_data = this->prefetch_blobs_[0]->mutable_cpu_data();
   Dtype* top_label = NULL;  // suppress warnings about uninitialized variables
 
   if (this->output_labels_) {
@@ -110,12 +110,12 @@ void DataLayer<Dtype>::InternalThreadEntry() {
     timer.Start();
 
     // Apply data transformations (mirror, scale, crop...)
-    int offset = this->prefetch_data_.offset(item_id);
-    this->transformed_data_.set_cpu_data(top_data + offset);
+    int offset = this->prefetch_blobs_[0]->offset(item_id);
+    this->transformed_blobs_[0]->set_cpu_data(top_data + offset);
     if (datum.encoded()) {
-      this->data_transformer_.Transform(cv_img, &(this->transformed_data_));
+      this->data_transformer_.Transform(cv_img, this->transformed_blobs_[0].get());
     } else {
-      this->data_transformer_.Transform(datum, &(this->transformed_data_));
+      this->data_transformer_.Transform(datum, this->transformed_blobs_[0].get());
     }
     if (this->output_labels_) {
       top_label[item_id] = datum.label();

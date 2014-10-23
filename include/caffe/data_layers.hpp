@@ -76,10 +76,48 @@ class BasePrefetchingDataLayer :
   virtual void InternalThreadEntry() {}
 
  protected:
-  Blob<Dtype> prefetch_data_;
-  Blob<Dtype> prefetch_label_;
-  Blob<Dtype> transformed_data_;
+  bool multi_blob_mode_;
+
+  vector<shared_ptr<Blob<Dtype> > > prefetch_blobs_;
+  Blob<Dtype> prefetch_label_;              // Used only when multi_blob_mode_ = false
+  vector<shared_ptr<Blob<Dtype> > > transformed_blobs_;            // If multi_blob_mode_ = true, this is only used for the first blob!
+
+  // Whether or not each blob should be transformed. Only defined when
+  // multi_blob_mode_ is true. If an entry is true, the blob is
+  // transformed and the transformed version is output. If false, the
+  // blob from prefetch_blobs_ is output. Note: for now only
+  // transforms on the first blob are supported! Changing this will
+  // require refactoring transforms to allow multiple transforms per
+  // data layer.
+  //vector<bool> transform_blob_;
 };
+
+// template <typename Dtype>
+// class JBY_BasePrefetchingMultiDataLayer :
+//     public BasePrefetchingDataLayer<Dtype> {
+//  public:
+//   explicit JBY_BasePrefetchingMultiDataLayer(const LayerParameter& param)
+//       : BaseDataLayer<Dtype>(param) {}
+//   virtual ~JBY_BasePrefetchingMultiDataLayer() {}
+//   // LayerSetUp: implements common data layer setup functionality, and calls
+//   // DataLayerSetUp to do special data layer setup for individual layer types.
+//   // This method may not be overridden.
+//   void LayerSetUp(const vector<Blob<Dtype>*>& bottom,
+//       const vector<Blob<Dtype>*>& top);
+
+//   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+//        const vector<Blob<Dtype>*>& top);
+//   virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,
+//        const vector<Blob<Dtype>*>& top);
+
+//   // virtual void CreatePrefetchThread();
+//   // virtual void JoinPrefetchThread();
+//   // // The thread's function
+//   // virtual void InternalThreadEntry() {}
+
+//  protected:
+//   vector<Blob<Dtype> > prefetch_blobs_;
+// };
 
 template <typename Dtype>
 class DataLayer : public BasePrefetchingDataLayer<Dtype> {

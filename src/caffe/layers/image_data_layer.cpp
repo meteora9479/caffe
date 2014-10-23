@@ -68,12 +68,12 @@ void ImageDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   const int batch_size = this->layer_param_.image_data_param().batch_size();
   if (crop_size > 0) {
     top[0]->Reshape(batch_size, channels, crop_size, crop_size);
-    this->prefetch_data_.Reshape(batch_size, channels, crop_size, crop_size);
-    this->transformed_data_.Reshape(1, channels, crop_size, crop_size);
+    this->prefetch_blobs_[0]->Reshape(batch_size, channels, crop_size, crop_size);
+    this->transformed_blobs_[0]->Reshape(1, channels, crop_size, crop_size);
   } else {
     top[0]->Reshape(batch_size, channels, height, width);
-    this->prefetch_data_.Reshape(batch_size, channels, height, width);
-    this->transformed_data_.Reshape(1, channels, height, width);
+    this->prefetch_blobs_[0]->Reshape(batch_size, channels, height, width);
+    this->transformed_blobs_[0]->Reshape(1, channels, height, width);
   }
   LOG(INFO) << "output data size: " << top[0]->num() << ","
       << top[0]->channels() << "," << top[0]->height() << ","
@@ -98,9 +98,9 @@ void ImageDataLayer<Dtype>::InternalThreadEntry() {
   double read_time = 0;
   double trans_time = 0;
   CPUTimer timer;
-  CHECK(this->prefetch_data_.count());
-  CHECK(this->transformed_data_.count());
-  Dtype* top_data = this->prefetch_data_.mutable_cpu_data();
+  CHECK(this->prefetch_blobs_[0]->count());
+  CHECK(this->transformed_blobs_[0]->count());
+  Dtype* top_data = this->prefetch_blobs_[0]->mutable_cpu_data();
   Dtype* top_label = this->prefetch_label_.mutable_cpu_data();
   ImageDataParameter image_data_param = this->layer_param_.image_data_param();
   const int batch_size = image_data_param.batch_size();
@@ -123,9 +123,9 @@ void ImageDataLayer<Dtype>::InternalThreadEntry() {
     read_time += timer.MicroSeconds();
     timer.Start();
     // Apply transformations (mirror, crop...) to the image
-    int offset = this->prefetch_data_.offset(item_id);
-    this->transformed_data_.set_cpu_data(top_data + offset);
-    this->data_transformer_.Transform(cv_img, &(this->transformed_data_));
+    int offset = this->prefetch_blobs_[0]->offset(item_id);
+    this->transformed_blobs_[0]->set_cpu_data(top_data + offset);
+    this->data_transformer_.Transform(cv_img, this->transformed_blobs_[0].get());
     trans_time += timer.MicroSeconds();
 
     top_label[item_id] = lines_[lines_id_].second;

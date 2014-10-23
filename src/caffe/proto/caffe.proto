@@ -327,6 +327,7 @@ message LayerParameter {
   optional TanHParameter tanh_param = 37;
   optional ThresholdParameter threshold_param = 25;
   optional WindowDataParameter window_data_param = 20;
+  //  optional MultiDataParameter multi_data_param = 120;
 
   // Parameters for data pre-processing.
   optional TransformationParameter transform_param = 36;
@@ -443,6 +444,11 @@ message DataParameter {
   // DEPRECATED. See TransformationParameter. Specify if we want to randomly mirror
   // data.
   optional bool mirror = 6 [default = false];
+  // Specify whether or not to use multi_blob mode. If multi_blob mode
+  // is false, the DataLayer can output either 1 blob (data) or two
+  // blobs (data + label). If multi_blob is true, the DataLayer can
+  // output 1 or more blobs of arbitrary shape.
+  optional bool multi_blob = 120 [default = false];
 }
 
 // Message that stores parameters used by DropoutLayer
