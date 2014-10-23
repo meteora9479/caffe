@@ -327,7 +327,6 @@ message LayerParameter {
   optional TanHParameter tanh_param = 37;
   optional ThresholdParameter threshold_param = 25;
   optional WindowDataParameter window_data_param = 20;
-  //  optional MultiDataParameter multi_data_param = 120;
 
   // Parameters for data pre-processing.
   optional TransformationParameter transform_param = 36;

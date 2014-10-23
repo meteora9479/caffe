@@ -64,10 +64,6 @@ void BasePrefetchingDataLayer<Dtype>::LayerSetUp(
   DLOG(INFO) << "Initializing prefetch";
   this->CreatePrefetchThread();
   DLOG(INFO) << "Prefetch initialized.";
-
-  // CHECK_EQ(this->prefetch_data_.size(), 0) << "prefetch_data_ should not be used by JBY_BasePrefetchingMultiDataLayer";
-  // CHECK_EQ(this->prefetch_label_.size(), 0) << "prefetch_label_ should not be used by JBY_BasePrefetchingMultiDataLayer";
-  // CHECK_EQ(this->transformed_data_.size(), 0) << "transformed_data_ should not be used by JBY_BasePrefetchingMultiDataLayer";
 }
 
 template <typename Dtype>
@@ -109,59 +105,11 @@ void BasePrefetchingDataLayer<Dtype>::Forward_cpu(
   CreatePrefetchThread();
 }
 
-// template <typename Dtype>
-// void JBY_BasePrefetchingMultiDataLayer<Dtype>::LayerSetUp(
-//     const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
-//   BaseDataLayer<Dtype>::LayerSetUp(bottom, top);
-
-//   // At this point, top is already the correct size, so we just resize
-//   // the prefetch vector to match
-//   LOG(INFO) << "JBY top vector is of size " << top.size();
-//   this->prefetch_blobs_.resize(top.size());
-//   CHECK_EQ(this->prefetch_data_.size(), 0) << "prefetch_data_ should not be used by JBY_BasePrefetchingMultiDataLayer";
-//   CHECK_EQ(this->prefetch_label_.size(), 0) << "prefetch_label_ should not be used by JBY_BasePrefetchingMultiDataLayer";
-//   CHECK_EQ(this->transformed_data_.size(), 0) << "transformed_data_ should not be used by JBY_BasePrefetchingMultiDataLayer";
-
-//   // Now, start the prefetch thread. Before calling prefetch, we make a few
-//   // cpu_data calls so that the prefetch thread does not accidentally make
-//   // simultaneous cudaMalloc calls when the main thread is running. In some
-//   // GPUs this seems to cause failures if we do not so.
-//   for (int blob_id = 0; blob_id < this->prefetch_blobs_.size(); ++blob_id) {
-//     this->prefetch_blobs_.mutable_cpu_data()
-//   }
-
-//   DLOG(INFO) << "Initializing prefetch";
-//   this->CreatePrefetchThread();
-//   DLOG(INFO) << "Prefetch initialized.";
-// }
-
-// template <typename Dtype>
-// void JBY_BasePrefetchingMultiDataLayer<Dtype>::Forward_cpu(
-//     const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
-//   // First, join the thread
-//   JoinPrefetchThread();
-//   DLOG(INFO) << "Thread joined";
-
-//   // Copy the data in each prefetch_blob_ to the corresponding top blob
-//   for (int blob_id = 0; blob_id < this->prefetch_blobs_.size(); ++blob_id) {
-//     caffe_copy(this->prefetch_blobs_[blob_id].count(),
-//                this->prefetch_blobs_[blob_id].cpu_data(),
-//                top[blob_id]->mutable_cpu_data());
-//   }
-
-//   DLOG(INFO) << "Prefetch copied";
-//   // Start a new prefetch thread
-//   DLOG(INFO) << "CreatePrefetchThread";
-//   CreatePrefetchThread();
-// }
-
 #ifdef CPU_ONLY
 STUB_GPU_FORWARD(BasePrefetchingDataLayer, Forward);
-  //STUB_GPU_FORWARD(JBY_BasePrefetchingMultiDataLayer, Forward);
 #endif
 
 INSTANTIATE_CLASS(BaseDataLayer);
 INSTANTIATE_CLASS(BasePrefetchingDataLayer);
-  //INSTANTIATE_CLASS(JBY_BasePrefetchingMultiDataLayer);
 
 }  // namespace caffe

@@ -92,33 +92,6 @@ class BasePrefetchingDataLayer :
   //vector<bool> transform_blob_;
 };
 
-// template <typename Dtype>
-// class JBY_BasePrefetchingMultiDataLayer :
-//     public BasePrefetchingDataLayer<Dtype> {
-//  public:
-//   explicit JBY_BasePrefetchingMultiDataLayer(const LayerParameter& param)
-//       : BaseDataLayer<Dtype>(param) {}
-//   virtual ~JBY_BasePrefetchingMultiDataLayer() {}
-//   // LayerSetUp: implements common data layer setup functionality, and calls
-//   // DataLayerSetUp to do special data layer setup for individual layer types.
-//   // This method may not be overridden.
-//   void LayerSetUp(const vector<Blob<Dtype>*>& bottom,
-//       const vector<Blob<Dtype>*>& top);
-
-//   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
-//        const vector<Blob<Dtype>*>& top);
-//   virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,
-//        const vector<Blob<Dtype>*>& top);
-
-//   // virtual void CreatePrefetchThread();
-//   // virtual void JoinPrefetchThread();
-//   // // The thread's function
-//   // virtual void InternalThreadEntry() {}
-
-//  protected:
-//   vector<Blob<Dtype> > prefetch_blobs_;
-// };
-
 template <typename Dtype>
 class DataLayer : public BasePrefetchingDataLayer<Dtype> {
  public:
