@@ -79,17 +79,14 @@ class BasePrefetchingDataLayer :
   bool multi_blob_mode_;
 
   vector<shared_ptr<Blob<Dtype> > > prefetch_blobs_;
-  Blob<Dtype> prefetch_label_;              // Used only when multi_blob_mode_ = false
-  vector<shared_ptr<Blob<Dtype> > > transformed_blobs_;            // If multi_blob_mode_ = true, this is only used for the first blob!
-
-  // Whether or not each blob should be transformed. Only defined when
-  // multi_blob_mode_ is true. If an entry is true, the blob is
-  // transformed and the transformed version is output. If false, the
-  // blob from prefetch_blobs_ is output. Note: for now only
-  // transforms on the first blob are supported! Changing this will
-  // require refactoring transforms to allow multiple transforms per
-  // data layer.
-  //vector<bool> transform_blob_;
+  // Note: for now only transforms on the first blob are supported
+  // (regardless of multi_blob_mode_)!  Changing this to allow
+  // transforms on any blob will require refactoring BaseDataLayer
+  // allow multiple transforms per data layer, or refactoring
+  // transforms to allow them to operate on multiple inputs.
+  vector<shared_ptr<Blob<Dtype> > > transformed_blobs_;
+  // prefetch_label_ is only used when multi_blob_mode_ = false
+  Blob<Dtype> prefetch_label_;
 };
 
 template <typename Dtype>
