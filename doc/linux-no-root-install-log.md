@@ -1,4 +1,4 @@
-## Install Log
+# Install Log
 
 This is a log of my experience setting up Caffe on a cluster running
 Redhat 6.3 (Santiago) **without having root**, i.e. by compiling and
@@ -99,7 +99,7 @@ After install the above prereqs, caffe should compile!
 
 
 
-## Expanded transcript
+# Expanded Install Transcript
 
 Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of the above with a few more details, including URLs for where to get each library.
 
