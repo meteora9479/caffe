@@ -94,3 +94,106 @@ After install the above prereqs, caffe should compile!
     compute_image_mean.bin*  convert_imageset.o  dump_network.bin*  finetune_net.o            test_net.bin*   train_net.o
     compute_image_mean.o     device_query.bin*   dump_network.o     net_speed_benchmark.bin*  test_net.o
     convert_imageset.bin*    device_query.o      finetune_net.bin*  net_speed_benchmark.o     train_net.bin*
+
+
+
+
+
+## Expanded transcript
+
+Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of the above with a few more details, including URLs for where to get each library.
+
+**Install protobuf:**
+
+    $ cd ~/temp/
+    $ git clone https://github.com/google/protobuf.git
+    $ cd protobuf/
+    $ ./autogen.sh
+    $ ./configure --prefix=$HOME/local
+    $ make
+    $ make install
+    
+**Install snappy:**
+
+    $ cd ~/temp/
+    $ git clone https://github.com/google/snappy.git
+    $ cd snappy
+    $ ./autogen.sh
+    $ ./configure --prefix=$HOME/local
+    $ make
+    $ make install
+    
+**Install leveldb:**
+
+    $ cd ~/temp/
+    $ git clone https://github.com/google/leveldb.git
+    $ cd leveldb
+    $ make
+    $ cp -av libleveldb.* $HOME/local/lib/
+    $ cp -av include/leveldb $HOME/local/include/
+    
+**Install OpenCV:**
+
+    $ cd ~/temp/
+    $ wget 'https://github.com/Itseez/opencv/archive/2.4.8.tar.gz'
+    $ tar xzf 2.4.8.tar.gz
+    $ cd opencv-2.4.8/
+    $ cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=$HOME/local -D BUILD_opencv_gpu=OFF .
+    $ make
+    $ make install
+    
+**Install Boost:**
+
+    $ cd ~/temp/
+    $ wget “http://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz”
+    $ tar xzf boost_1_55_0.tar.gz
+    $ cd boost_1_55_0
+    $ ./bootstrap.sh --prefix=$HOME/local
+    $ ./b2 -j 32
+    $ ./b2 install
+    
+    ...failed updating 58 targets...
+    ...skipped 12 targets...
+    ...updated 10855 targets...
+    
+    
+**Install lmdb:**
+
+    $ cd ~/temp
+    $ git clone git://gitorious.org/mdb/mdb.git
+    $ cd mdb/libraries/liblmdb
+    $ make
+    $ mkdir $HOME/local/man/man1
+    $ make prefix=$HOME/local install
+    
+**Install gflags:**
+
+    $ cd ~/temp/
+    $ git clone https://code.google.com/p/gflags/
+    $ mkdir build && cd build
+    $ CXXFLAGS="-fPIC" cmake -D CMAKE_INSTALL_PREFIX=$HOME/local ..
+    $ make -j
+    $ make install
+    
+**Install glog:**
+
+    $ cd ~/temp/
+    $ wget https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz
+    $ tar zxvf glog-0.3.3.tar.gz
+    $ cd glog-0.3.3
+    $ ./configure --prefix=$HOME/local
+    $ make && make install
+    
+    
+**Install hdf5:**
+
+    $ cd ~/temp
+    $ wget "https://www.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.14.tar" 
+    $ tar -xf hdf5-1.8.14.tar
+    $ cd hdf5-1.8.14
+    $ ./configure --prefix=$HOME/local
+    $ make
+    $ make check                # run test suite.
+    $ make install
+    $ make check-install        # verify installation.
+    
