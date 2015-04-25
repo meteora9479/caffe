@@ -200,6 +200,7 @@ Following are the dependencies required for installing caffe python wrapper (pyc
 
 
 **Install Python:**
+
     $ wget "https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz"
     $ tar xvfJ Python-2.7.6.tar.xz 
     $ cd Python-2.7.6
@@ -208,6 +209,7 @@ Following are the dependencies required for installing caffe python wrapper (pyc
     
     
 **Install virtualenv:**
+
     $ wget "https://pypi.python.org/packages/source/v/virtualenv/virtualenv-12.1.1.tar.gz"
     $ tar xvzf virtualenv-12.1.1.tar.gz 
     $ cd virtualenv-12.1.1
@@ -215,6 +217,7 @@ Following are the dependencies required for installing caffe python wrapper (pyc
     $ ~/local/bin/python setup.py install
     
 **Make virtualenv "ml"**
+
     $ cd ~
     $ mkdir virtualenvs && cd virtualenvs
     $ ~/local/bin/virtualenv ml --python=$HOME/local/bin/python2.7
@@ -224,6 +227,7 @@ Following are the dependencies required for installing caffe python wrapper (pyc
      
     
 **Install Python dependencies:**
+
     $ cd $HOME/s/caffe/python
     $ for req in $(cat requirements.txt); do pip install $req; done
     
@@ -269,6 +273,7 @@ Following are the dependencies required for installing caffe python wrapper (pyc
     
     
 **Install Scipy:**
+
     $ git clone https://github.com/scipy/scipy
     # modify the config file per below
     $  sdiff -s site.cfg.example site.cfg
@@ -281,6 +286,7 @@ Following are the dependencies required for installing caffe python wrapper (pyc
     $ python setup.py install
     
 **Compile caffe + pycaffe:**
+
     $ cd $HOME/s/caffe
     $ make all
     $ make pycaffe
