@@ -104,6 +104,7 @@ After install the above prereqs, caffe should compile!
 Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of the above with a few more details, including URLs for where to get each library.
 
 **Install protobuf:**
+
     $ cd ~/temp/
     $ git clone https://github.com/google/protobuf.git
     $ cd protobuf/
@@ -113,6 +114,7 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ make install
     
 **Install snappy:**
+
     $ cd ~/temp/
     $ git clone https://github.com/google/snappy.git
     $ cd snappy
@@ -122,6 +124,7 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ make install
     
 **Install leveldb:**
+
     $ cd ~/temp/
     $ git clone https://github.com/google/leveldb.git
     $ cd leveldb
@@ -130,6 +133,7 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ cp -av include/leveldb $HOME/local/include/
     
 **Install OpenCV:**
+
     $ cd ~/temp/
     $ wget 'https://github.com/Itseez/opencv/archive/2.4.8.tar.gz'
     $ tar xzf 2.4.8.tar.gz
@@ -157,6 +161,7 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     
     
 **Install lmdb:**
+
     $ cd ~/temp
     $ git clone git://gitorious.org/mdb/mdb.git
     $ cd mdb/libraries/liblmdb
@@ -165,6 +170,7 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ make prefix=$HOME/local install
     
 **Install gflags:**
+
     $ cd ~/temp/
     $ git clone https://code.google.com/p/gflags/
     $ mkdir build && cd build
@@ -173,6 +179,7 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ make install
     
 **Install glog:**
+
     $ cd ~/temp/
     $ wget https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz
     $ tar zxvf glog-0.3.3.tar.gz
@@ -182,6 +189,7 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     
     
 **Install hdf5:**
+
     $ cd ~/temp
     $ wget "https://www.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.14.tar" 
     $ tar -xf hdf5-1.8.14.tar
