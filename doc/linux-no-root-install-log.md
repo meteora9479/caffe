@@ -104,7 +104,6 @@ After install the above prereqs, caffe should compile!
 Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of the above with a few more details, including URLs for where to get each library.
 
 **Install protobuf:**
-
     $ cd ~/temp/
     $ git clone https://github.com/google/protobuf.git
     $ cd protobuf/
@@ -114,7 +113,6 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ make install
     
 **Install snappy:**
-
     $ cd ~/temp/
     $ git clone https://github.com/google/snappy.git
     $ cd snappy
@@ -124,7 +122,6 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ make install
     
 **Install leveldb:**
-
     $ cd ~/temp/
     $ git clone https://github.com/google/leveldb.git
     $ cd leveldb
@@ -133,7 +130,6 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ cp -av include/leveldb $HOME/local/include/
     
 **Install OpenCV:**
-
     $ cd ~/temp/
     $ wget 'https://github.com/Itseez/opencv/archive/2.4.8.tar.gz'
     $ tar xzf 2.4.8.tar.gz
@@ -144,21 +140,23 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     
 **Install Boost:**
 
+(Reference: https://www.mail-archive.com/graph-tool@skewed.de/msg00539.html)
+    
     $ cd ~/temp/
     $ wget “http://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz”
     $ tar xzf boost_1_55_0.tar.gz
     $ cd boost_1_55_0
-    $ ./bootstrap.sh --prefix=$HOME/local
+    ($ ./bootstrap.sh --prefix=$HOME/local)
+    $ ./bootstrap.sh --prefix=$HOME/local --with-python=python2.7
     $ ./b2 -j 32
     $ ./b2 install
     
-    ...failed updating 58 targets...
-    ...skipped 12 targets...
-    ...updated 10855 targets...
+    ...failed updating 2 targets...
+    ...skipped 6 targets...
+    ...updated 62 targets...
     
     
 **Install lmdb:**
-
     $ cd ~/temp
     $ git clone git://gitorious.org/mdb/mdb.git
     $ cd mdb/libraries/liblmdb
@@ -167,7 +165,6 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ make prefix=$HOME/local install
     
 **Install gflags:**
-
     $ cd ~/temp/
     $ git clone https://code.google.com/p/gflags/
     $ mkdir build && cd build
@@ -176,7 +173,6 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ make install
     
 **Install glog:**
-
     $ cd ~/temp/
     $ wget https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz
     $ tar zxvf glog-0.3.3.tar.gz
@@ -186,7 +182,6 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     
     
 **Install hdf5:**
-
     $ cd ~/temp
     $ wget "https://www.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.14.tar" 
     $ tar -xf hdf5-1.8.14.tar
@@ -197,3 +192,95 @@ Courtesy of [Yixuan Li](http://www.cs.cornell.edu/~yli/), here's a version of th
     $ make install
     $ make check-install        # verify installation.
     
+    
+    
+### Pycaffe
+
+Following are the dependencies required for installing caffe python wrapper (pycaffe). The below process assumes you want to build and install your own Python and install your own Python packages in your home directory using virtualenv.
+
+
+**Install Python:**
+    $ wget "https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz"
+    $ tar xvfJ Python-2.7.6.tar.xz 
+    $ cd Python-2.7.6
+    $ ./configure --prefix=$HOME/local --enable-shared   # enable-shared to prevent "recompile with -fPIC" errors
+    $ make -j; make install
+    
+    
+**Install virtualenv:**
+    $ wget "https://pypi.python.org/packages/source/v/virtualenv/virtualenv-12.1.1.tar.gz"
+    $ tar xvzf virtualenv-12.1.1.tar.gz 
+    $ cd virtualenv-12.1.1
+    $ ~/local/bin/python setup.py build
+    $ ~/local/bin/python setup.py install
+    
+**Make virtualenv "ml"**
+    $ cd ~
+    $ mkdir virtualenvs && cd virtualenvs
+    $ ~/local/bin/virtualenv ml --python=$HOME/local/bin/python2.7
+    $ vim ~/.bashrc
+    # then add the line to ~/.bashrc file: source $HOME/virtualenvs/ml/bin/activate
+    $ source ~/.bashrc
+     
+    
+**Install Python dependencies:**
+    $ cd $HOME/s/caffe/python
+    $ for req in $(cat requirements.txt); do pip install $req; done
+    
+    
+**InstallOpenBlas**
+
+(Reference http://osdf.github.io/blog/numpyscipy-with-openblas-for-ubuntu-1204-second-try.html)
+
+    $ cd ~/temp/
+    $ git clone git://github.com/xianyi/OpenBLAS
+    $ cd OpenBlas
+    $ make FC=gfortran
+    $ make PREFIX=$HOME/local install
+    
+    
+**Install Numpy with Openblas:**
+
+(Reference: http://osdf.github.io/blog/numpyscipy-with-openblas-for-ubuntu-1204-second-try.html)
+
+    $ cd ~/temp
+    $ git clone https://github.com/numpy/numpy
+    $ cp site.config.example site.config
+    # modify the config file per below
+    $ sdiff -s site.cfg.example site.cfg
+    #[ALL]							      |	[ALL]
+    #library_dirs = /usr/local/lib				      |	library_dirs = $HOME/local/lib
+    #include_dirs = /usr/local/include	                 |	include_dirs = $HOME/local/include
+    # [openblas]						      |	[openblas]
+    # libraries = openblas					      |	libraries = openblas
+    # library_dirs = /opt/OpenBLAS/lib			      |	library_dirs = $HOME/local/lib
+    # include_dirs = /opt/OpenBLAS/include	      |	include_dirs = $HOME/local/include
+    
+    $ export BLAS=$HOME/local/lib/libopenblas.a
+    $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/local/lib/
+    $ python setup.py build
+    $ python setup.py install
+    
+    # test numpy efficiency (your results may vary; the following is on Intel Xeon 2.60GHz)
+    $ python -c "import numpy as N; import time; a=N.random.randn(2000, 2000); tic=time.time(); N.dot(a, a); print time.time()-tic;"
+    0.0684700012207
+    $ python -c "import numpy as N; import time; a=N.random.randn(4000, 4000); tic=time.time(); N.dot(a, a); print time.time()-tic;"
+    0.452013969421
+    
+    
+**Install Scipy:**
+    $ git clone https://github.com/scipy/scipy
+    # modify the config file per below
+    $  sdiff -s site.cfg.example site.cfg
+    #[DEFAULT]			      |	[DEFAULT]
+    #library_dirs = /usr/local/lib	      |	library_dirs = /usr/local/lib    $HOME/local/lib
+    #include_dirs = /usr/local/include|	include_dirs = /usr/local/include   $HOME/local/include
+    
+    $ export BLAS=$HOME/local/lib/libopenblas.so
+    $ python setup.py build
+    $ python setup.py install
+    
+**Compile caffe + pycaffe:**
+    $ cd $HOME/s/caffe
+    $ make all
+    $ make pycaffe
