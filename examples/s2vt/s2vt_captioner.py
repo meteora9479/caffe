@@ -518,8 +518,10 @@ def main():
   # TODO: Input the snapshot directory, vocab path, frames (and sents) path
   DIR = './snapshots'
   VOCAB_FILE = './yt_coco_mvad_mpiimd_vocabulary.txt'
-  FRAMEFEAT_FILE_PATTERN = './yt_allframes_vgg_fc7_{0}.txt'
- 
+  #FRAMEFEAT_FILE_PATTERN = './yt_allframes_vgg_fc7_{0}.txt'
+  #FRAMEFEAT_FILE_PATTERN = './vid1253_30.txt'   
+  FRAMEFEAT_FILE_PATTERN = './MSVD_val_vgg19.txt'  
+
   LSTM_NET_FILE = './s2vt.words_to_preds.deploy.prototxt'
   RESULTS_DIR = './results'
   MODEL_FILE = '%s/%s.caffemodel' % (DIR, args.modelname)
@@ -579,7 +581,7 @@ def main():
         html_out_file.close()
       text_out_types = to_text_output(outputs, vocab_list)
       for strat_type in text_out_types:
-        text_out_fname = text_out_filename + strat_type + '.txt'
+        text_out_fname = text_out_filename + strat_type + '_vgg19_all' + '.txt'
         text_out_file = open(text_out_fname, 'a')
         text_out_file.write(''.join(text_out_types[strat_type]))
         text_out_file.close()
